@@ -62,18 +62,6 @@ const screeningQuestions = [
     ],
   },
   {
-    id: "entity_type",
-    question: "How is the business organized?",
-    subtext: "",
-    options: [
-      { label: "LLC", value: "llc" },
-      { label: "Corporation", value: "corp" },
-      { label: "Partnership", value: "partnership" },
-      { label: "Sole proprietorship", value: "sole" },
-      { label: "Unsure", value: "unsure" },
-    ],
-  },
-  {
     id: "owner_count",
     question: "How many owners does the business have?",
     subtext: "",
@@ -82,17 +70,6 @@ const screeningQuestions = [
       { label: "2", value: "2" },
       { label: "3 to 5", value: "3-5" },
       { label: "6 or more", value: "6+" },
-    ],
-  },
-  {
-    id: "role",
-    question: "What is your role in the business?",
-    subtext: "",
-    options: [
-      { label: "Owner", value: "owner" },
-      { label: "Officer, director, or manager", value: "manager" },
-      { label: "Both owner and manager", value: "both" },
-      { label: "Advisor or other", value: "other" },
     ],
   },
   {
@@ -107,42 +84,6 @@ const screeningQuestions = [
 ];
 
 const profileQuestions = [
-  {
-    id: "years",
-    question: "How long has the business been in operation?",
-    subtext: "",
-    options: [
-      { label: "Less than 2 years", value: "<2" },
-      { label: "2 to 5 years", value: "2-5" },
-      { label: "5 to 15 years", value: "5-15" },
-      { label: "15 or more years", value: "15+" },
-    ],
-  },
-  {
-    id: "revenue",
-    question: "Approximate annual revenue?",
-    subtext: "Used to calibrate risk weighting. Not shared.",
-    options: [
-      { label: "Under $250,000", value: "<250k" },
-      { label: "$250,000 to $1 million", value: "250k-1m" },
-      { label: "$1 million to $5 million", value: "1m-5m" },
-      { label: "$5 million or more", value: "5m+" },
-      { label: "Prefer not to say", value: "na" },
-    ],
-  },
-  {
-    id: "industry",
-    question: "What industry best describes the business?",
-    subtext: "",
-    options: [
-      { label: "Professional services", value: "professional" },
-      { label: "Construction or trades", value: "construction" },
-      { label: "Real estate", value: "realestate" },
-      { label: "Retail, restaurant, or hospitality", value: "retail" },
-      { label: "Manufacturing or distribution", value: "manufacturing" },
-      { label: "Other", value: "other" },
-    ],
-  },
   {
     id: "ownership_changed",
     question: "Has ownership changed in the last 5 years?",
@@ -168,9 +109,8 @@ const profileQuestions = [
 ];
 
 const govQuestions = [
-  { id: "gov_written_agreement", category: "governance", question: "Does the business have a current written governing agreement (operating agreement, shareholder agreement, or partnership agreement)?", subtext: "Sole proprietorships without co-owners may skip.", options: stdOptions, critical: (v) => v === "no" && true, show: (a) => a.entity_type !== "sole" && a.owner_count !== "1" },
+  { id: "gov_written_agreement", category: "governance", question: "Does the business have a current written governing agreement (operating agreement, shareholder agreement, or partnership agreement)?", subtext: "Sole proprietorships without co-owners may skip.", options: stdOptions, critical: (v) => v === "no" && true, show: (a) => a.owner_count !== "1" },
   { id: "gov_last_reviewed", category: "governance", question: "When was the governing agreement last reviewed or updated?", subtext: "", options: [{ label: "Within the last 2 years", value: "recent", score: SCORE.YES },{ label: "2 to 5 years ago", value: "mid", score: SCORE.PARTIAL },{ label: "More than 5 years ago", value: "old", score: SCORE.PARTIAL },{ label: "Never reviewed since signing", value: "never", score: SCORE.NO },{ label: "Unsure", value: "unsure", score: SCORE.UNSURE }], show: (a) => a.gov_written_agreement === "yes" || a.gov_written_agreement === "partial" },
-  { id: "gov_reflects_reality", category: "governance", question: "Does the governing agreement reflect current ownership percentages, roles, and business operations?", subtext: "", options: ynuOptions, show: (a) => a.gov_written_agreement === "yes" || a.gov_written_agreement === "partial" },
   { id: "gov_source", category: "governance", question: "How was the current governing agreement created?", subtext: "", options: [{ label: "Drafted or reviewed by an attorney", value: "attorney", score: SCORE.YES },{ label: "Downloaded form or online template", value: "form", score: SCORE.NO, critical: true },{ label: "Drafted internally without legal review", value: "internal", score: SCORE.PARTIAL },{ label: "Unsure", value: "unsure", score: SCORE.UNSURE }], show: (a) => a.gov_written_agreement === "yes" || a.gov_written_agreement === "partial" },
   { id: "gov_all_signed", category: "governance", question: "Have all current owners signed the current version?", subtext: "", options: ynuOptions, show: (a) => a.gov_written_agreement === "yes" || a.gov_written_agreement === "partial" },
 ];
@@ -203,7 +143,6 @@ const ownershipQuestions = [
   },
   { id: "own_valuation", category: "ownership_succession", question: "Does the buy-sell specify a valuation method, and has it been reviewed in the last 3 years?", subtext: "A valuation formula set at founding rarely still fits.", options: stdOptions, show: (a) => a.own_buysell === "yes" || a.own_buysell === "partial" },
   { id: "own_buysell_funded", category: "ownership_succession", question: "Is the buy-sell funded (for example, by life insurance, sinking fund, or installment terms)?", subtext: "An unfunded buy-sell can be unenforceable in practice.", options: ynuOptions, show: (a) => a.own_buysell === "yes" || a.own_buysell === "partial" },
-  { id: "own_succession_plan", category: "ownership_succession", question: "Is there a written succession plan for key leadership roles?", subtext: "", options: ynuOptions },
 ];
 
 const fiduciaryQuestions = [
@@ -218,28 +157,25 @@ const fiduciaryQuestions = [
       { label: "No, duties are not modified", value: "no", score: SCORE.YES },
       { label: "Unsure / don't know", value: "unsure", score: SCORE.UNSURE, critical: true },
     ],
-    show: (a) => a.entity_type !== "sole" && a.owner_count !== "1",
+    show: (a) => a.owner_count !== "1",
   },
   { id: "fid_conflict_policy", category: "fiduciary", question: "Is there a written conflict-of-interest policy for owners, officers, or managers?", subtext: "", options: ynuOptions, show: (a) => a.owner_count !== "1" },
   { id: "fid_related_party", category: "fiduciary", question: "Are transactions between the business and its owners (or their relatives or affiliates) documented and formally approved?", subtext: "Examples: the business leasing property from an owner, hiring an owner's family member, or buying from an owner-affiliated vendor.", options: stdOptions, show: (a) => a.owner_count !== "1" },
   { id: "fid_decisions_defined", category: "fiduciary", question: "Are voting thresholds and a list of 'major decisions' (e.g., sale, borrowing, new owners) specified in the governing agreement?", subtext: "", options: stdOptions, show: (a) => a.owner_count !== "1" },
   { id: "fid_deadlock", category: "fiduciary", question: "Is there a deadlock resolution mechanism if owners or managers cannot agree?", subtext: "Relevant especially for 2-owner or 50/50 businesses.", options: ynuOptions, show: (a) => a.owner_count === "2" || a.owner_count === "3-5" },
-  { id: "fid_authority", category: "fiduciary", question: "Is it clearly documented who has authority to bind the company to contracts, debts, or major decisions?", subtext: "", options: ynuOptions, show: (a) => a.owner_count !== "1" },
 ];
 
 const recordsQuestions = [
-  { id: "rec_meetings", category: "records", question: "Does the business hold and document annual meetings or written consents?", subtext: "", options: stdOptions, show: (a) => a.owner_count !== "1" },
-  { id: "rec_major_decisions", category: "records", question: "Are major decisions memorialized in written resolutions, minutes, or consents?", subtext: "", options: stdOptions, show: (a) => a.owner_count !== "1" },
+  { id: "rec_meetings", category: "records", question: "Does the business hold annual meetings and document major decisions in written consents, resolutions, or minutes?", subtext: "", options: stdOptions, show: (a) => a.owner_count !== "1" },
   { id: "rec_books_records", category: "records", question: "Is there a defined process for maintaining and producing books and records when owners request them?", subtext: "Owners have statutory rights to inspect records. Refusing or mishandling a request is a common dispute trigger.", options: stdOptions, show: (a) => a.owner_count !== "1" },
   { id: "rec_franchise_tax", category: "records", question: "Is the business current on Texas franchise tax filings and registered agent designations?", subtext: "", options: ynuOptions },
-  { id: "rec_employment_basics", category: "records", question: "For any employees (including family members): are written offer letters, I-9s, and a basic employee handbook in place?", subtext: "Family-run businesses often skip these steps for family hires. That creates risk.", options: stdOptions, show: (a) => a.entity_type !== "sole" || a.family_involved === "yes" },
+  { id: "rec_employment_basics", category: "records", question: "For any employees (including family members): are written offer letters, I-9s, and a basic employee handbook in place?", subtext: "Family-run businesses often skip these steps for family hires. That creates risk.", options: stdOptions },
   { id: "rec_distributions", category: "records", question: "Are distributions and owner compensation documented and historically proportionate to ownership (or explicitly authorized otherwise)?", subtext: "Informal \"rewarding yourself\" is one of the most common fiduciary-duty lawsuits in closely held businesses.", options: stdOptions, critical: (v) => v === "no", show: (a) => a.owner_count !== "1" },
 ];
 
 const insuranceQuestions = [
   { id: "ins_reviewed", category: "insurance", question: "When was your insurance coverage last reviewed against your actual current operations?", subtext: "Operations change faster than policies.", options: [{ label: "Within the last 2 years", value: "recent", score: SCORE.YES },{ label: "3 to 5 years ago", value: "mid", score: SCORE.PARTIAL },{ label: "More than 5 years ago", value: "old", score: SCORE.NO },{ label: "Never / unsure", value: "never", score: SCORE.NO }] },
   { id: "ins_exclusions", category: "insurance", question: "Do you understand what your current policies exclude?", subtext: "Claim denials almost always turn on exclusions the insured didn't know about.", options: [{ label: "Yes, clearly", value: "yes", score: SCORE.YES },{ label: "Somewhat", value: "somewhat", score: SCORE.PARTIAL },{ label: "No / unsure", value: "no", score: SCORE.NO }] },
-  { id: "ins_operations_changed", category: "insurance", question: "Have your operations, revenue, or workforce changed significantly since your last policy review?", subtext: "", options: [{ label: "No significant change", value: "no", score: SCORE.YES },{ label: "Yes, and I've updated coverage", value: "yes_updated", score: SCORE.YES },{ label: "Yes, but I haven't updated coverage", value: "yes_not_updated", score: SCORE.NO, critical: true },{ label: "Unsure", value: "unsure", score: SCORE.UNSURE }] },
   { id: "ins_contract_requirements", category: "insurance", question: "Do any of your contracts require specific insurance coverage that you haven't verified you actually carry?", subtext: "", options: [{ label: "No — we have verified coverage matches contract requirements", value: "no", score: SCORE.YES },{ label: "Yes — there are contract requirements we haven't checked", value: "yes", score: SCORE.NO, critical: true },{ label: "Unsure", value: "unsure", score: SCORE.UNSURE, critical: true },{ label: "Not applicable — our contracts don't require specific insurance", value: "na", score: SCORE.YES }] },
   { id: "ins_claim_history", category: "insurance", question: "Have you ever had a claim denied or defended under a reservation of rights?", subtext: "A prior denial is a strong signal to reassess coverage.", options: [{ label: "No", value: "no", score: SCORE.YES },{ label: "Yes, and we addressed the underlying coverage issue", value: "yes_addressed", score: SCORE.YES },{ label: "Yes, and we haven't changed coverage since", value: "yes_not_addressed", score: SCORE.NO },{ label: "Unsure", value: "unsure", score: SCORE.UNSURE }] },
 ];
@@ -249,7 +185,6 @@ const contractQuestions = [
   { id: "con_attorney_review", category: "contracts", question: "Are your significant contracts reviewed by an attorney before signing?", subtext: "\"Significant\" typically means recurring obligations, personal guarantees, large dollar value, or long term.", options: [{ label: "Yes, routinely", value: "yes", score: SCORE.YES },{ label: "Sometimes", value: "sometimes", score: SCORE.PARTIAL },{ label: "Rarely or never", value: "no", score: SCORE.NO },{ label: "Unsure", value: "unsure", score: SCORE.UNSURE }] },
   { id: "con_templates", category: "contracts", question: "Does the business have attorney-drafted template agreements for common transactions?", subtext: "Examples: customer agreements, vendor agreements, NDAs, independent contractor agreements.", options: stdOptions },
   { id: "con_concentration", category: "contracts", question: "Do you have any single customer or vendor representing more than 25% of revenue or spend?", subtext: "Concentration risk magnifies the importance of contract terms.", options: [{ label: "No", value: "no", score: SCORE.YES },{ label: "Yes, and the contract is well-negotiated", value: "yes_good_contract", score: SCORE.PARTIAL },{ label: "Yes, and the contract is weak, outdated, or missing", value: "yes_weak_contract", score: SCORE.NO, critical: true },{ label: "Unsure", value: "unsure", score: SCORE.UNSURE }] },
-  { id: "con_tracking", category: "contracts", question: "Are renewal dates, termination windows, and recurring obligations under your contracts tracked systematically?", subtext: "", options: stdOptions },
   { id: "con_key_clauses", category: "contracts", question: "Have you actually reviewed the indemnification, limitation-of-liability, and insurance requirement clauses in your key contracts?", subtext: "", options: ynuOptions },
   { id: "con_arbitration", category: "contracts", question: "Do your contracts contain arbitration or other dispute-resolution clauses, and do you understand what they require?", subtext: "Arbitration is often agreed to without understanding the cost, speed, and appeal implications.", options: [{ label: "Yes, and we understand what they require", value: "yes_understood", score: SCORE.YES },{ label: "Yes, but we don't fully understand them", value: "yes_not_understood", score: SCORE.NO, critical: true },{ label: "No arbitration clauses", value: "no", score: SCORE.YES },{ label: "Unsure", value: "unsure", score: SCORE.UNSURE, critical: true }] },
   { id: "con_recent_unreviewed", category: "contracts", question: "In the last 2 years, have you signed any contracts without legal review that involve recurring obligations, personal guarantees, or significant financial exposure?", subtext: "", options: [{ label: "No", value: "no", score: SCORE.YES },{ label: "Yes", value: "yes", score: SCORE.NO, critical: true },{ label: "Unsure", value: "unsure", score: SCORE.UNSURE }] },
@@ -257,7 +192,6 @@ const contractQuestions = [
 
 const familyLightQuestions = [
   { id: "fam_charter", category: "fiduciary", question: "Is there a written family business charter, policy, or set of agreed-upon rules for family members in the business?", subtext: "", options: stdOptions, show: (a) => a.family_involved === "yes" },
-  { id: "fam_employment_process", category: "records", question: "Are employment decisions for family members (hiring, pay, promotion, termination) handled through a defined written process?", subtext: "", options: stdOptions, show: (a) => a.family_involved === "yes" },
 ];
 
 const coreAuditQuestions = [...govQuestions, ...ownershipQuestions, ...fiduciaryQuestions, ...recordsQuestions, ...insuranceQuestions, ...contractQuestions, ...familyLightQuestions];
