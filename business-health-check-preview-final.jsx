@@ -293,11 +293,11 @@ function computeResults(answers, askedQuestions) {
 
 const priorityNarratives = {
   governance: { headline: "Your foundational governance documents need attention.", body: "Most closely held business disputes I've seen started with an agreement that was outdated, incomplete, or downloaded from the internet. A current, well-drafted governing agreement sets the ground rules before anyone is angry and prevents most fights from ever starting." },
-  ownership_succession: { headline: "Your ownership and succession structure has meaningful gaps.", body: "Buy-sell agreements, valuation methods, and succession plans are the architecture that determines what happens when an owner dies, divorces, retires, or wants out. Gaps here are where the most expensive disputes happen — because by the time they surface, everyone's interests have diverged." },
+  ownership_succession: { headline: "Your ownership and succession structure has meaningful gaps.", body: "Buy-sell agreements, valuation methods, and succession plans are the architecture that determines what happens when an owner dies, divorces, retires, or wants out. Gaps here are where the most expensive disputes happen. By the time they surface, everyone's interests have diverged." },
   fiduciary: { headline: "Fiduciary duties and decision-making protocols are under-defined.", body: "Fiduciary duty is the highest standard in the law, and it's the one owners and managers most often overlook. Many owners don't know what they owe each other until they've already breached it. Clear conflict-of-interest policies, decision-making rules, and documented related-party transactions prevent most of those problems." },
-  records: { headline: "Your records and compliance practices need tightening.", body: "Undocumented meetings, informal distributions, and missing written consents don't cause disputes on their own — but when a dispute does arise, their absence turns a solvable disagreement into a trial. Good records are cheap insurance." },
+  records: { headline: "Your records and compliance practices need tightening.", body: "Undocumented meetings, informal distributions, and missing written consents don't cause disputes on their own, but when a dispute does arise, their absence turns a solvable disagreement into a trial. Good records are cheap insurance." },
   insurance: { headline: "Your insurance coverage is likely out of step with your actual risk.", body: "Most business owners bought their policies once, renewed on autopilot, and have no idea what's excluded until a claim is denied. An insurance review against current operations and contract requirements is one of the highest-value preventive steps a business can take." },
-  contracts: { headline: "Your third-party contract practices expose the business to avoidable risk.", body: "The pattern I see most often is owners who didn't consult an attorney before signing a contract, and later discovered how one-sided the agreement was. The time to negotiate — or at least understand — a contract is before you sign it." },
+  contracts: { headline: "Your third-party contract practices expose the business to avoidable risk.", body: "The pattern I see most often is owners who didn't consult an attorney before signing a contract, and later discovered how one-sided the agreement was. The time to negotiate, or at minimum understand, a contract is before you sign it." },
 };
 
 function getEducationalModules(answers) {
@@ -348,7 +348,7 @@ function LifeOfLawsuit() {
     ["Defendant's Answer", "Defendant responds and may also counterclaim.", "left"],
     ["Written Discovery", "You answer written questions and collect all relevant documents.", "right"],
     ["Depositions", "Parties and witnesses are questioned under oath. Preparation takes many hours; depositions often last a full day.", "left"],
-    ["Motions", "Attorneys file and respond to motions throughout the case — from discovery disputes to motions to dismiss claims.", "right"],
+    ["Motions", "Attorneys file and respond to motions throughout the case, including discovery disputes and motions to dismiss claims.", "right"],
     ["Pre-Trial", "In the weeks before trial, you prepare witnesses, identify exhibits, finalize the jury charge, and complete court-required tasks.", "left"],
     ["Trial", "The culmination of the case. The court or jury decides the outcome.", "right"],
     ["Post-Trial", "Even after trial, there are steps to enter judgment, disregard the verdict, or appeal.", "left"],
@@ -382,7 +382,7 @@ function ArbitrationTable() {
     ["Decision-maker", "A judge or jury decides the outcome.", "An arbitrator or panel decides the outcome. Arbitrators are typically experienced attorneys."],
     ["Filing costs", "Minimal filing fees, plus a jury fee.", "Thousands in filing fees, plus payment of the arbitrator(s) at their hourly rate."],
     ["Public or private", "Allegations and court filings are public record.", "Documents filed in arbitration are generally not available to the public."],
-    ["Scheduling control", "Minimal control — scheduling is driven by the court's availability.", "Parties can dictate the schedule, subject to the arbitrator's availability."],
+    ["Scheduling control", "Minimal control; scheduling is driven by the court's availability.", "Parties can dictate the schedule, subject to the arbitrator's availability."],
     ["Rules of evidence", "Parties must follow rules of evidence and procedure.", "Rules of evidence and procedure generally do not apply; more informal."],
     ["Dispositive motions", "Claims can sometimes be dismissed before trial (motion to dismiss, summary judgment).", "Arbitrators are less likely to grant dispositive motions, so a defendant may have to go through the entire hearing on a claim a court might have dismissed."],
     ["Appeal rights", "Parties can appeal on many grounds, including insufficient evidence or misapplied law.", "Extremely limited bases to appeal. Misapplication of the law is not a ground for appeal."],
@@ -751,7 +751,7 @@ export default function BusinessHealthCheck() {
               <SectionTitle>Worth understanding</SectionTitle>
               <p style={{ fontSize: 13, color: C.textLight, margin: "0 0 14px", fontFamily: sans, lineHeight: 1.5 }}>Your answers touched on a few topics where the details really matter. Expand any of the sections below to learn more.</p>
               {mods.includes("fiduciary") && (
-                <Expander title="Fiduciary duty — what it is and why it matters" accentColor={C.coral}>
+                <Expander title="Fiduciary duty: what it is and why it matters" accentColor={C.coral}>
                   <p style={{ margin: "0 0 10px" }}>If you're in business, you're likely a fiduciary or deal with one regularly. Not understanding this role is one of the most common reasons people get sued.</p>
                   <p style={{ margin: "0 0 10px" }}>A fiduciary is anyone in a position of trust and confidence: an attorney to a client, a trustee to a beneficiary, a partner to other partners, an officer or director to the business, an executor to an estate. Fiduciaries owe:</p>
                   <ul style={{ margin: "0 0 10px", paddingLeft: 22, lineHeight: 1.8 }}>
@@ -760,27 +760,27 @@ export default function BusinessHealthCheck() {
                     <li>A duty to refrain from self-dealing</li>
                     <li>A duty of good faith and fair dealing</li>
                   </ul>
-                  <p style={{ margin: "0 0 10px" }}>Fiduciary duties are a very high standard, and they're most often dismissed or ignored in family-run businesses — exactly because the relationships feel informal and trusting.</p>
-                  <p style={{ margin: 0, fontStyle: "italic", color: C.textLight }}>A good rule of thumb: disclose everything. If you're hesitant to disclose something, that hesitation probably means you're breaching — or about to breach — your fiduciary duty.</p>
+                  <p style={{ margin: "0 0 10px" }}>Fiduciary duties are a very high standard, and they're most often dismissed or ignored in family-run businesses, precisely because the relationships feel informal and trusting.</p>
+                  <p style={{ margin: 0, fontStyle: "italic", color: C.textLight }}>A good rule of thumb: disclose everything. If you're hesitant to disclose something, that hesitation probably means you're breaching your fiduciary duty, or are about to.</p>
                 </Expander>
               )}
               {mods.includes("arbitration") && (
-                <Expander title="Arbitration vs. litigation — what you actually agreed to" accentColor={C.gold}>
+                <Expander title="Arbitration vs. litigation: what you actually agreed to" accentColor={C.gold}>
                   <p style={{ margin: "0 0 14px" }}>Many contracts contain arbitration clauses, but most people don't fully understand what arbitration is or how different it is from going to court. Here's a side-by-side:</p>
                   <ArbitrationTable />
-                  <p style={{ margin: "14px 0 0", fontSize: 13 }}>Arbitration isn't inherently better or worse than litigation — but agreeing to it without understanding it is a mistake. The time to weigh the trade-offs is before you sign, not after a dispute arises.</p>
+                  <p style={{ margin: "14px 0 0", fontSize: 13 }}>Arbitration is different from litigation in ways that matter. Agreeing to it without understanding those differences is a mistake. The time to think through the trade-offs is before you sign, not after a dispute arises.</p>
                 </Expander>
               )}
               {mods.includes("form_contracts") && (
                 <Expander title="Why downloaded form agreements cause problems" accentColor={C.orange}>
                   <p style={{ margin: "0 0 10px" }}>Governing agreements aren't one-size-fits-all. The odds of an online form actually fitting your business are low, and worse than no agreement is one with rules that are unfair, inappropriate for your circumstances, or simply incomprehensible.</p>
-                  <p style={{ margin: 0 }}>A common example: a downloaded agreement requires arbitration under AAA rules. Many business owners don't know that filing a claim with AAA can cost thousands just to start — and thousands more to pay the arbitrator. That's a provision that quietly rewrites what a future dispute will look like, and it was agreed to without anyone noticing.</p>
+                  <p style={{ margin: 0 }}>A common example: a downloaded agreement requires arbitration under AAA rules. Many business owners don't know that filing a claim with AAA can cost thousands just to start, plus thousands more to pay the arbitrator. That's a provision that quietly rewrites what a future dispute will look like, and it was agreed to without anyone noticing.</p>
                 </Expander>
               )}
               {mods.includes("concentration") && (
                 <Expander title="Concentration risk in customer and vendor relationships" accentColor={C.orange}>
                   <p style={{ margin: "0 0 10px" }}>When a single customer or vendor represents a large share of revenue or spend, contract terms matter disproportionately. A weak or informal contract with a concentrated counterparty is one of the riskiest configurations a business can be in.</p>
-                  <p style={{ margin: 0 }}>Owners who invest years building a key relationship often find — too late — that the other side can walk away freely, change terms unilaterally, or squeeze pricing with no contractual defense. The time to fix this is while the relationship is good.</p>
+                  <p style={{ margin: 0 }}>Owners who invest years building a key relationship often find out too late that the other side can walk away freely, change terms unilaterally, or squeeze pricing with no contractual defense. The time to fix this is while the relationship is good.</p>
                 </Expander>
               )}
             </Card>
@@ -790,7 +790,7 @@ export default function BusinessHealthCheck() {
               <SectionTitle>If these gaps aren't addressed</SectionTitle>
               <p style={{ fontSize: 14, color: C.text, lineHeight: 1.6, margin: "0 0 16px", fontFamily: serif }}>Preventive legal work is dramatically cheaper and less stressful than litigation. If the gaps your audit surfaced eventually turn into a formal dispute, here is what resolving them in court typically looks like:</p>
               <LifeOfLawsuit />
-              <p style={{ fontSize: 13, color: C.textLight, lineHeight: 1.6, margin: "20px 0 0", fontFamily: sans, fontStyle: "italic" }}>Even those who win often suffer financially and emotionally in the process. That's the case for fixing the things this audit flagged now, while it's still inexpensive and everyone's on speaking terms.</p>
+              <p style={{ fontSize: 13, color: C.textLight, lineHeight: 1.6, margin: "20px 0 0", fontFamily: sans, fontStyle: "italic" }}>Even those who win often come out of it worse than they went in. That's the case for fixing the things this audit flagged now, while it's still inexpensive and everyone's on speaking terms.</p>
             </Card>
           )}
           <Card style={{ background: C.navy, borderColor: C.navy, color: "white", textAlign: "center" }}>
@@ -811,12 +811,12 @@ export default function BusinessHealthCheck() {
           )}
           {emailSubmitted && (
             <Card style={{ borderLeft: `3px solid ${C.sage}` }}>
-              <div style={{ fontSize: 14, fontWeight: 600, color: C.sage, marginBottom: 4, fontFamily: sans }}>Thanks — we'll be in touch.</div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: C.sage, marginBottom: 4, fontFamily: sans }}>Thanks. We'll be in touch.</div>
               <div style={{ fontSize: 13, color: C.textLight, fontFamily: sans }}>A copy of your results is on the way.</div>
             </Card>
           )}
           <div style={{ background: C.cream, borderRadius: 8, padding: "16px 20px", marginBottom: 20, fontFamily: sans, marginTop: 8 }}>
-            <p style={{ fontSize: 12, color: C.textLight, lineHeight: 1.6, margin: "0 0 8px" }}><strong style={{ color: C.text }}>About this result:</strong> This result is based on general Texas law and the information you provided. It is legal information — not legal advice tailored to your specific situation.</p>
+            <p style={{ fontSize: 12, color: C.textLight, lineHeight: 1.6, margin: "0 0 8px" }}><strong style={{ color: C.text }}>About this result:</strong> This result is based on general Texas law and the information you provided. It is legal information, not legal advice tailored to your specific situation.</p>
             <p style={{ fontSize: 11, color: C.textLight, lineHeight: 1.5, margin: 0 }}>Your specific facts may raise issues this tool does not address. Applicable law, tax treatment, and best practices are subject to change. This tool does not evaluate the validity of any contract, governing document, or insurance policy. No attorney-client relationship has been created by your use of this tool. If you are unsure about any aspect of your situation, consult a licensed Texas attorney before taking action.</p>
           </div>
           <button onClick={restart} style={{ width: "100%", padding: "14px 24px", fontSize: 14, fontWeight: 600, color: C.navy, background: "white", border: `1px solid ${C.border}`, borderRadius: 10, cursor: "pointer", fontFamily: sans }}>← Start Over</button>

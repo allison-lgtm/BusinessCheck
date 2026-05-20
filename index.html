@@ -75,18 +75,6 @@ const screeningQuestions = [
     ],
   },
   {
-    id: "entity_type",
-    question: "How is the business organized?",
-    subtext: "",
-    options: [
-      { label: "LLC", value: "llc" },
-      { label: "Corporation", value: "corp" },
-      { label: "Partnership", value: "partnership" },
-      { label: "Sole proprietorship", value: "sole" },
-      { label: "Unsure", value: "unsure" },
-    ],
-  },
-  {
     id: "owner_count",
     question: "How many owners does the business have?",
     subtext: "",
@@ -95,17 +83,6 @@ const screeningQuestions = [
       { label: "2", value: "2" },
       { label: "3 to 5", value: "3-5" },
       { label: "6 or more", value: "6+" },
-    ],
-  },
-  {
-    id: "role",
-    question: "What is your role in the business?",
-    subtext: "",
-    options: [
-      { label: "Owner", value: "owner" },
-      { label: "Officer, director, or manager", value: "manager" },
-      { label: "Both owner and manager", value: "both" },
-      { label: "Advisor or other", value: "other" },
     ],
   },
   {
@@ -120,42 +97,6 @@ const screeningQuestions = [
 ];
 
 const profileQuestions = [
-  {
-    id: "years",
-    question: "How long has the business been in operation?",
-    subtext: "",
-    options: [
-      { label: "Less than 2 years", value: "<2" },
-      { label: "2 to 5 years", value: "2-5" },
-      { label: "5 to 15 years", value: "5-15" },
-      { label: "15 or more years", value: "15+" },
-    ],
-  },
-  {
-    id: "revenue",
-    question: "Approximate annual revenue?",
-    subtext: "Used to calibrate risk weighting. Not shared.",
-    options: [
-      { label: "Under $250,000", value: "<250k" },
-      { label: "$250,000 to $1 million", value: "250k-1m" },
-      { label: "$1 million to $5 million", value: "1m-5m" },
-      { label: "$5 million or more", value: "5m+" },
-      { label: "Prefer not to say", value: "na" },
-    ],
-  },
-  {
-    id: "industry",
-    question: "What industry best describes the business?",
-    subtext: "",
-    options: [
-      { label: "Professional services", value: "professional" },
-      { label: "Construction or trades", value: "construction" },
-      { label: "Real estate", value: "realestate" },
-      { label: "Retail, restaurant, or hospitality", value: "retail" },
-      { label: "Manufacturing or distribution", value: "manufacturing" },
-      { label: "Other", value: "other" },
-    ],
-  },
   {
     id: "ownership_changed",
     question: "Has ownership changed in the last 5 years?",
@@ -181,9 +122,8 @@ const profileQuestions = [
 ];
 
 const govQuestions = [
-  { id: "gov_written_agreement", category: "governance", question: "Does the business have a current written governing agreement (operating agreement, shareholder agreement, or partnership agreement)?", subtext: "Sole proprietorships without co-owners may skip.", options: stdOptions, critical: (v) => v === "no" && true, show: (a) => a.entity_type !== "sole" && a.owner_count !== "1" },
+  { id: "gov_written_agreement", category: "governance", question: "Does the business have a current written governing agreement (operating agreement, shareholder agreement, or partnership agreement)?", subtext: "Sole proprietorships without co-owners may skip.", options: stdOptions, critical: (v) => v === "no" && true, show: (a) => a.owner_count !== "1" },
   { id: "gov_last_reviewed", category: "governance", question: "When was the governing agreement last reviewed or updated?", subtext: "", options: [{ label: "Within the last 2 years", value: "recent", score: SCORE.YES },{ label: "2 to 5 years ago", value: "mid", score: SCORE.PARTIAL },{ label: "More than 5 years ago", value: "old", score: SCORE.PARTIAL },{ label: "Never reviewed since signing", value: "never", score: SCORE.NO },{ label: "Unsure", value: "unsure", score: SCORE.UNSURE }], show: (a) => a.gov_written_agreement === "yes" || a.gov_written_agreement === "partial" },
-  { id: "gov_reflects_reality", category: "governance", question: "Does the governing agreement reflect current ownership percentages, roles, and business operations?", subtext: "", options: ynuOptions, show: (a) => a.gov_written_agreement === "yes" || a.gov_written_agreement === "partial" },
   { id: "gov_source", category: "governance", question: "How was the current governing agreement created?", subtext: "", options: [{ label: "Drafted or reviewed by an attorney", value: "attorney", score: SCORE.YES },{ label: "Downloaded form or online template", value: "form", score: SCORE.NO, critical: true },{ label: "Drafted internally without legal review", value: "internal", score: SCORE.PARTIAL },{ label: "Unsure", value: "unsure", score: SCORE.UNSURE }], show: (a) => a.gov_written_agreement === "yes" || a.gov_written_agreement === "partial" },
   { id: "gov_all_signed", category: "governance", question: "Have all current owners signed the current version?", subtext: "", options: ynuOptions, show: (a) => a.gov_written_agreement === "yes" || a.gov_written_agreement === "partial" },
 ];
@@ -216,7 +156,6 @@ const ownershipQuestions = [
   },
   { id: "own_valuation", category: "ownership_succession", question: "Does the buy-sell specify a valuation method, and has it been reviewed in the last 3 years?", subtext: "A valuation formula set at founding rarely still fits.", options: stdOptions, show: (a) => a.own_buysell === "yes" || a.own_buysell === "partial" },
   { id: "own_buysell_funded", category: "ownership_succession", question: "Is the buy-sell funded (for example, by life insurance, sinking fund, or installment terms)?", subtext: "An unfunded buy-sell can be unenforceable in practice.", options: ynuOptions, show: (a) => a.own_buysell === "yes" || a.own_buysell === "partial" },
-  { id: "own_succession_plan", category: "ownership_succession", question: "Is there a written succession plan for key leadership roles?", subtext: "", options: ynuOptions },
 ];
 
 const fiduciaryQuestions = [
@@ -231,28 +170,25 @@ const fiduciaryQuestions = [
       { label: "No, duties are not modified", value: "no", score: SCORE.YES },
       { label: "Unsure / don't know", value: "unsure", score: SCORE.UNSURE, critical: true },
     ],
-    show: (a) => a.entity_type !== "sole" && a.owner_count !== "1",
+    show: (a) => a.owner_count !== "1",
   },
   { id: "fid_conflict_policy", category: "fiduciary", question: "Is there a written conflict-of-interest policy for owners, officers, or managers?", subtext: "", options: ynuOptions, show: (a) => a.owner_count !== "1" },
   { id: "fid_related_party", category: "fiduciary", question: "Are transactions between the business and its owners (or their relatives or affiliates) documented and formally approved?", subtext: "Examples: the business leasing property from an owner, hiring an owner's family member, or buying from an owner-affiliated vendor.", options: stdOptions, show: (a) => a.owner_count !== "1" },
   { id: "fid_decisions_defined", category: "fiduciary", question: "Are voting thresholds and a list of 'major decisions' (e.g., sale, borrowing, new owners) specified in the governing agreement?", subtext: "", options: stdOptions, show: (a) => a.owner_count !== "1" },
   { id: "fid_deadlock", category: "fiduciary", question: "Is there a deadlock resolution mechanism if owners or managers cannot agree?", subtext: "Relevant especially for 2-owner or 50/50 businesses.", options: ynuOptions, show: (a) => a.owner_count === "2" || a.owner_count === "3-5" },
-  { id: "fid_authority", category: "fiduciary", question: "Is it clearly documented who has authority to bind the company to contracts, debts, or major decisions?", subtext: "", options: ynuOptions, show: (a) => a.owner_count !== "1" },
 ];
 
 const recordsQuestions = [
-  { id: "rec_meetings", category: "records", question: "Does the business hold and document annual meetings or written consents?", subtext: "", options: stdOptions, show: (a) => a.owner_count !== "1" },
-  { id: "rec_major_decisions", category: "records", question: "Are major decisions memorialized in written resolutions, minutes, or consents?", subtext: "", options: stdOptions, show: (a) => a.owner_count !== "1" },
+  { id: "rec_meetings", category: "records", question: "Does the business hold annual meetings and document major decisions in written consents, resolutions, or minutes?", subtext: "", options: stdOptions, show: (a) => a.owner_count !== "1" },
   { id: "rec_books_records", category: "records", question: "Is there a defined process for maintaining and producing books and records when owners request them?", subtext: "Owners have statutory rights to inspect records. Refusing or mishandling a request is a common dispute trigger.", options: stdOptions, show: (a) => a.owner_count !== "1" },
   { id: "rec_franchise_tax", category: "records", question: "Is the business current on Texas franchise tax filings and registered agent designations?", subtext: "", options: ynuOptions },
-  { id: "rec_employment_basics", category: "records", question: "For any employees (including family members): are written offer letters, I-9s, and a basic employee handbook in place?", subtext: "Family-run businesses often skip these steps for family hires. That creates risk.", options: stdOptions, show: (a) => a.entity_type !== "sole" || a.family_involved === "yes" },
+  { id: "rec_employment_basics", category: "records", question: "For any employees (including family members): are written offer letters, I-9s, and a basic employee handbook in place?", subtext: "Family-run businesses often skip these steps for family hires. That creates risk.", options: stdOptions },
   { id: "rec_distributions", category: "records", question: "Are distributions and owner compensation documented and historically proportionate to ownership (or explicitly authorized otherwise)?", subtext: "Informal \"rewarding yourself\" is one of the most common fiduciary-duty lawsuits in closely held businesses.", options: stdOptions, critical: (v) => v === "no", show: (a) => a.owner_count !== "1" },
 ];
 
 const insuranceQuestions = [
   { id: "ins_reviewed", category: "insurance", question: "When was your insurance coverage last reviewed against your actual current operations?", subtext: "Operations change faster than policies.", options: [{ label: "Within the last 2 years", value: "recent", score: SCORE.YES },{ label: "3 to 5 years ago", value: "mid", score: SCORE.PARTIAL },{ label: "More than 5 years ago", value: "old", score: SCORE.NO },{ label: "Never / unsure", value: "never", score: SCORE.NO }] },
   { id: "ins_exclusions", category: "insurance", question: "Do you understand what your current policies exclude?", subtext: "Claim denials almost always turn on exclusions the insured didn't know about.", options: [{ label: "Yes, clearly", value: "yes", score: SCORE.YES },{ label: "Somewhat", value: "somewhat", score: SCORE.PARTIAL },{ label: "No / unsure", value: "no", score: SCORE.NO }] },
-  { id: "ins_operations_changed", category: "insurance", question: "Have your operations, revenue, or workforce changed significantly since your last policy review?", subtext: "", options: [{ label: "No significant change", value: "no", score: SCORE.YES },{ label: "Yes, and I've updated coverage", value: "yes_updated", score: SCORE.YES },{ label: "Yes, but I haven't updated coverage", value: "yes_not_updated", score: SCORE.NO, critical: true },{ label: "Unsure", value: "unsure", score: SCORE.UNSURE }] },
   { id: "ins_contract_requirements", category: "insurance", question: "Do any of your contracts require specific insurance coverage that you haven't verified you actually carry?", subtext: "", options: [{ label: "No — we have verified coverage matches contract requirements", value: "no", score: SCORE.YES },{ label: "Yes — there are contract requirements we haven't checked", value: "yes", score: SCORE.NO, critical: true },{ label: "Unsure", value: "unsure", score: SCORE.UNSURE, critical: true },{ label: "Not applicable — our contracts don't require specific insurance", value: "na", score: SCORE.YES }] },
   { id: "ins_claim_history", category: "insurance", question: "Have you ever had a claim denied or defended under a reservation of rights?", subtext: "A prior denial is a strong signal to reassess coverage.", options: [{ label: "No", value: "no", score: SCORE.YES },{ label: "Yes, and we addressed the underlying coverage issue", value: "yes_addressed", score: SCORE.YES },{ label: "Yes, and we haven't changed coverage since", value: "yes_not_addressed", score: SCORE.NO },{ label: "Unsure", value: "unsure", score: SCORE.UNSURE }] },
 ];
@@ -262,7 +198,6 @@ const contractQuestions = [
   { id: "con_attorney_review", category: "contracts", question: "Are your significant contracts reviewed by an attorney before signing?", subtext: "\"Significant\" typically means recurring obligations, personal guarantees, large dollar value, or long term.", options: [{ label: "Yes, routinely", value: "yes", score: SCORE.YES },{ label: "Sometimes", value: "sometimes", score: SCORE.PARTIAL },{ label: "Rarely or never", value: "no", score: SCORE.NO },{ label: "Unsure", value: "unsure", score: SCORE.UNSURE }] },
   { id: "con_templates", category: "contracts", question: "Does the business have attorney-drafted template agreements for common transactions?", subtext: "Examples: customer agreements, vendor agreements, NDAs, independent contractor agreements.", options: stdOptions },
   { id: "con_concentration", category: "contracts", question: "Do you have any single customer or vendor representing more than 25% of revenue or spend?", subtext: "Concentration risk magnifies the importance of contract terms.", options: [{ label: "No", value: "no", score: SCORE.YES },{ label: "Yes, and the contract is well-negotiated", value: "yes_good_contract", score: SCORE.PARTIAL },{ label: "Yes, and the contract is weak, outdated, or missing", value: "yes_weak_contract", score: SCORE.NO, critical: true },{ label: "Unsure", value: "unsure", score: SCORE.UNSURE }] },
-  { id: "con_tracking", category: "contracts", question: "Are renewal dates, termination windows, and recurring obligations under your contracts tracked systematically?", subtext: "", options: stdOptions },
   { id: "con_key_clauses", category: "contracts", question: "Have you actually reviewed the indemnification, limitation-of-liability, and insurance requirement clauses in your key contracts?", subtext: "", options: ynuOptions },
   { id: "con_arbitration", category: "contracts", question: "Do your contracts contain arbitration or other dispute-resolution clauses, and do you understand what they require?", subtext: "Arbitration is often agreed to without understanding the cost, speed, and appeal implications.", options: [{ label: "Yes, and we understand what they require", value: "yes_understood", score: SCORE.YES },{ label: "Yes, but we don't fully understand them", value: "yes_not_understood", score: SCORE.NO, critical: true },{ label: "No arbitration clauses", value: "no", score: SCORE.YES },{ label: "Unsure", value: "unsure", score: SCORE.UNSURE, critical: true }] },
   { id: "con_recent_unreviewed", category: "contracts", question: "In the last 2 years, have you signed any contracts without legal review that involve recurring obligations, personal guarantees, or significant financial exposure?", subtext: "", options: [{ label: "No", value: "no", score: SCORE.YES },{ label: "Yes", value: "yes", score: SCORE.NO, critical: true },{ label: "Unsure", value: "unsure", score: SCORE.UNSURE }] },
@@ -270,7 +205,6 @@ const contractQuestions = [
 
 const familyLightQuestions = [
   { id: "fam_charter", category: "fiduciary", question: "Is there a written family business charter, policy, or set of agreed-upon rules for family members in the business?", subtext: "", options: stdOptions, show: (a) => a.family_involved === "yes" },
-  { id: "fam_employment_process", category: "records", question: "Are employment decisions for family members (hiring, pay, promotion, termination) handled through a defined written process?", subtext: "", options: stdOptions, show: (a) => a.family_involved === "yes" },
 ];
 
 const coreAuditQuestions = [...govQuestions, ...ownershipQuestions, ...fiduciaryQuestions, ...recordsQuestions, ...insuranceQuestions, ...contractQuestions, ...familyLightQuestions];
@@ -371,11 +305,11 @@ function computeResults(answers, askedQuestions) {
 
 const priorityNarratives = {
   governance: { headline: "Your foundational governance documents need attention.", body: "Most closely held business disputes I've seen started with an agreement that was outdated, incomplete, or downloaded from the internet. A current, well-drafted governing agreement sets the ground rules before anyone is angry and prevents most fights from ever starting." },
-  ownership_succession: { headline: "Your ownership and succession structure has meaningful gaps.", body: "Buy-sell agreements, valuation methods, and succession plans are the architecture that determines what happens when an owner dies, divorces, retires, or wants out. Gaps here are where the most expensive disputes happen — because by the time they surface, everyone's interests have diverged." },
+  ownership_succession: { headline: "Your ownership and succession structure has meaningful gaps.", body: "Buy-sell agreements, valuation methods, and succession plans are the architecture that determines what happens when an owner dies, divorces, retires, or wants out. Gaps here are where the most expensive disputes happen. By the time they surface, everyone's interests have diverged." },
   fiduciary: { headline: "Fiduciary duties and decision-making protocols are under-defined.", body: "Fiduciary duty is the highest standard in the law, and it's the one owners and managers most often overlook. Many owners don't know what they owe each other until they've already breached it. Clear conflict-of-interest policies, decision-making rules, and documented related-party transactions prevent most of those problems." },
-  records: { headline: "Your records and compliance practices need tightening.", body: "Undocumented meetings, informal distributions, and missing written consents don't cause disputes on their own — but when a dispute does arise, their absence turns a solvable disagreement into a trial. Good records are cheap insurance." },
+  records: { headline: "Your records and compliance practices need tightening.", body: "Undocumented meetings, informal distributions, and missing written consents don't cause disputes on their own, but when a dispute does arise, their absence turns a solvable disagreement into a trial. Good records are cheap insurance." },
   insurance: { headline: "Your insurance coverage is likely out of step with your actual risk.", body: "Most business owners bought their policies once, renewed on autopilot, and have no idea what's excluded until a claim is denied. An insurance review against current operations and contract requirements is one of the highest-value preventive steps a business can take." },
-  contracts: { headline: "Your third-party contract practices expose the business to avoidable risk.", body: "The pattern I see most often is owners who didn't consult an attorney before signing a contract, and later discovered how one-sided the agreement was. The time to negotiate — or at least understand — a contract is before you sign it." },
+  contracts: { headline: "Your third-party contract practices expose the business to avoidable risk.", body: "The pattern I see most often is owners who didn't consult an attorney before signing a contract, and later discovered how one-sided the agreement was. The time to negotiate, or at minimum understand, a contract is before you sign it." },
 };
 
 function getEducationalModules(answers) {
@@ -426,7 +360,7 @@ function LifeOfLawsuit() {
     ["Defendant's Answer", "Defendant responds and may also counterclaim.", "left"],
     ["Written Discovery", "You answer written questions and collect all relevant documents.", "right"],
     ["Depositions", "Parties and witnesses are questioned under oath. Preparation takes many hours; depositions often last a full day.", "left"],
-    ["Motions", "Attorneys file and respond to motions throughout the case — from discovery disputes to motions to dismiss claims.", "right"],
+    ["Motions", "Attorneys file and respond to motions throughout the case, including discovery disputes and motions to dismiss claims.", "right"],
     ["Pre-Trial", "In the weeks before trial, you prepare witnesses, identify exhibits, finalize the jury charge, and complete court-required tasks.", "left"],
     ["Trial", "The culmination of the case. The court or jury decides the outcome.", "right"],
     ["Post-Trial", "Even after trial, there are steps to enter judgment, disregard the verdict, or appeal.", "left"],
@@ -460,7 +394,7 @@ function ArbitrationTable() {
     ["Decision-maker", "A judge or jury decides the outcome.", "An arbitrator or panel decides the outcome. Arbitrators are typically experienced attorneys."],
     ["Filing costs", "Minimal filing fees, plus a jury fee.", "Thousands in filing fees, plus payment of the arbitrator(s) at their hourly rate."],
     ["Public or private", "Allegations and court filings are public record.", "Documents filed in arbitration are generally not available to the public."],
-    ["Scheduling control", "Minimal control — scheduling is driven by the court's availability.", "Parties can dictate the schedule, subject to the arbitrator's availability."],
+    ["Scheduling control", "Minimal control; scheduling is driven by the court's availability.", "Parties can dictate the schedule, subject to the arbitrator's availability."],
     ["Rules of evidence", "Parties must follow rules of evidence and procedure.", "Rules of evidence and procedure generally do not apply; more informal."],
     ["Dispositive motions", "Claims can sometimes be dismissed before trial (motion to dismiss, summary judgment).", "Arbitrators are less likely to grant dispositive motions, so a defendant may have to go through the entire hearing on a claim a court might have dismissed."],
     ["Appeal rights", "Parties can appeal on many grounds, including insufficient evidence or misapplied law.", "Extremely limited bases to appeal. Misapplication of the law is not a ground for appeal."],
@@ -828,7 +762,7 @@ function BusinessHealthCheck() {
               <SectionTitle>Worth understanding</SectionTitle>
               <p style={{ fontSize: 13, color: C.textLight, margin: "0 0 14px", fontFamily: sans, lineHeight: 1.5 }}>Your answers touched on a few topics where the details really matter. Expand any of the sections below to learn more.</p>
               {mods.includes("fiduciary") && (
-                <Expander title="Fiduciary duty — what it is and why it matters" accentColor={C.coral}>
+                <Expander title="Fiduciary duty: what it is and why it matters" accentColor={C.coral}>
                   <p style={{ margin: "0 0 10px" }}>If you're in business, you're likely a fiduciary or deal with one regularly. Not understanding this role is one of the most common reasons people get sued.</p>
                   <p style={{ margin: "0 0 10px" }}>A fiduciary is anyone in a position of trust and confidence: an attorney to a client, a trustee to a beneficiary, a partner to other partners, an officer or director to the business, an executor to an estate. Fiduciaries owe:</p>
                   <ul style={{ margin: "0 0 10px", paddingLeft: 22, lineHeight: 1.8 }}>
@@ -837,27 +771,27 @@ function BusinessHealthCheck() {
                     <li>A duty to refrain from self-dealing</li>
                     <li>A duty of good faith and fair dealing</li>
                   </ul>
-                  <p style={{ margin: "0 0 10px" }}>Fiduciary duties are a very high standard, and they're most often dismissed or ignored in family-run businesses — exactly because the relationships feel informal and trusting.</p>
-                  <p style={{ margin: 0, fontStyle: "italic", color: C.textLight }}>A good rule of thumb: disclose everything. If you're hesitant to disclose something, that hesitation probably means you're breaching — or about to breach — your fiduciary duty.</p>
+                  <p style={{ margin: "0 0 10px" }}>Fiduciary duties are a very high standard, and they're most often dismissed or ignored in family-run businesses, precisely because the relationships feel informal and trusting.</p>
+                  <p style={{ margin: 0, fontStyle: "italic", color: C.textLight }}>A good rule of thumb: disclose everything. If you're hesitant to disclose something, that hesitation probably means you're breaching your fiduciary duty, or are about to.</p>
                 </Expander>
               )}
               {mods.includes("arbitration") && (
-                <Expander title="Arbitration vs. litigation — what you actually agreed to" accentColor={C.gold}>
+                <Expander title="Arbitration vs. litigation: what you actually agreed to" accentColor={C.gold}>
                   <p style={{ margin: "0 0 14px" }}>Many contracts contain arbitration clauses, but most people don't fully understand what arbitration is or how different it is from going to court. Here's a side-by-side:</p>
                   <ArbitrationTable />
-                  <p style={{ margin: "14px 0 0", fontSize: 13 }}>Arbitration isn't inherently better or worse than litigation — but agreeing to it without understanding it is a mistake. The time to weigh the trade-offs is before you sign, not after a dispute arises.</p>
+                  <p style={{ margin: "14px 0 0", fontSize: 13 }}>Arbitration is different from litigation in ways that matter. Agreeing to it without understanding those differences is a mistake. The time to think through the trade-offs is before you sign, not after a dispute arises.</p>
                 </Expander>
               )}
               {mods.includes("form_contracts") && (
                 <Expander title="Why downloaded form agreements cause problems" accentColor={C.orange}>
                   <p style={{ margin: "0 0 10px" }}>Governing agreements aren't one-size-fits-all. The odds of an online form actually fitting your business are low, and worse than no agreement is one with rules that are unfair, inappropriate for your circumstances, or simply incomprehensible.</p>
-                  <p style={{ margin: 0 }}>A common example: a downloaded agreement requires arbitration under AAA rules. Many business owners don't know that filing a claim with AAA can cost thousands just to start — and thousands more to pay the arbitrator. That's a provision that quietly rewrites what a future dispute will look like, and it was agreed to without anyone noticing.</p>
+                  <p style={{ margin: 0 }}>A common example: a downloaded agreement requires arbitration under AAA rules. Many business owners don't know that filing a claim with AAA can cost thousands just to start, plus thousands more to pay the arbitrator. That's a provision that quietly rewrites what a future dispute will look like, and it was agreed to without anyone noticing.</p>
                 </Expander>
               )}
               {mods.includes("concentration") && (
                 <Expander title="Concentration risk in customer and vendor relationships" accentColor={C.orange}>
                   <p style={{ margin: "0 0 10px" }}>When a single customer or vendor represents a large share of revenue or spend, contract terms matter disproportionately. A weak or informal contract with a concentrated counterparty is one of the riskiest configurations a business can be in.</p>
-                  <p style={{ margin: 0 }}>Owners who invest years building a key relationship often find — too late — that the other side can walk away freely, change terms unilaterally, or squeeze pricing with no contractual defense. The time to fix this is while the relationship is good.</p>
+                  <p style={{ margin: 0 }}>Owners who invest years building a key relationship often find out too late that the other side can walk away freely, change terms unilaterally, or squeeze pricing with no contractual defense. The time to fix this is while the relationship is good.</p>
                 </Expander>
               )}
             </Card>
@@ -867,7 +801,7 @@ function BusinessHealthCheck() {
               <SectionTitle>If these gaps aren't addressed</SectionTitle>
               <p style={{ fontSize: 14, color: C.text, lineHeight: 1.6, margin: "0 0 16px", fontFamily: serif }}>Preventive legal work is dramatically cheaper and less stressful than litigation. If the gaps your audit surfaced eventually turn into a formal dispute, here is what resolving them in court typically looks like:</p>
               <LifeOfLawsuit />
-              <p style={{ fontSize: 13, color: C.textLight, lineHeight: 1.6, margin: "20px 0 0", fontFamily: sans, fontStyle: "italic" }}>Even those who win often suffer financially and emotionally in the process. That's the case for fixing the things this audit flagged now, while it's still inexpensive and everyone's on speaking terms.</p>
+              <p style={{ fontSize: 13, color: C.textLight, lineHeight: 1.6, margin: "20px 0 0", fontFamily: sans, fontStyle: "italic" }}>Even those who win often come out of it worse than they went in. That's the case for fixing the things this audit flagged now, while it's still inexpensive and everyone's on speaking terms.</p>
             </Card>
           )}
           <Card style={{ background: C.navy, borderColor: C.navy, color: "white", textAlign: "center" }}>
@@ -888,12 +822,12 @@ function BusinessHealthCheck() {
           )}
           {emailSubmitted && (
             <Card style={{ borderLeft: `3px solid ${C.sage}` }}>
-              <div style={{ fontSize: 14, fontWeight: 600, color: C.sage, marginBottom: 4, fontFamily: sans }}>Thanks — we'll be in touch.</div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: C.sage, marginBottom: 4, fontFamily: sans }}>Thanks. We'll be in touch.</div>
               <div style={{ fontSize: 13, color: C.textLight, fontFamily: sans }}>A copy of your results is on the way.</div>
             </Card>
           )}
           <div style={{ background: C.cream, borderRadius: 8, padding: "16px 20px", marginBottom: 20, fontFamily: sans, marginTop: 8 }}>
-            <p style={{ fontSize: 12, color: C.textLight, lineHeight: 1.6, margin: "0 0 8px" }}><strong style={{ color: C.text }}>About this result:</strong> This result is based on general Texas law and the information you provided. It is legal information — not legal advice tailored to your specific situation.</p>
+            <p style={{ fontSize: 12, color: C.textLight, lineHeight: 1.6, margin: "0 0 8px" }}><strong style={{ color: C.text }}>About this result:</strong> This result is based on general Texas law and the information you provided. It is legal information, not legal advice tailored to your specific situation.</p>
             <p style={{ fontSize: 11, color: C.textLight, lineHeight: 1.5, margin: 0 }}>Your specific facts may raise issues this tool does not address. Applicable law, tax treatment, and best practices are subject to change. This tool does not evaluate the validity of any contract, governing document, or insurance policy. No attorney-client relationship has been created by your use of this tool. If you are unsure about any aspect of your situation, consult a licensed Texas attorney before taking action.</p>
           </div>
           <button onClick={restart} style={{ width: "100%", padding: "14px 24px", fontSize: 14, fontWeight: 600, color: C.navy, background: "white", border: `1px solid ${C.border}`, borderRadius: 10, cursor: "pointer", fontFamily: sans }}>← Start Over</button>
